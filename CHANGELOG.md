@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-03-25
+
+### Added
+- GitHub Actions workflow to build and publish Docker images to GitHub Container Registry (GHCR)
+  - Triggered on version tags (`v*`), builds multi-platform images (`linux/amd64`, `linux/arm64`)
+  - `latest` tag published only for non-prerelease versions
+- Docker usage instructions in README (`docker pull` and `docker run` examples)
+
+### Changed
+- Dockerfile healthcheck switched from Python `urllib` to `curl` for Podman compatibility and reduced overhead
+- Updated `actions/checkout` from v4 to v6 in publish workflow
+
 ## [1.2.3] - 2026-03-03
 
 ### Fixed
@@ -128,6 +140,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Key rotation with JWKS support for multiple keys
 - External key import support
 
+[1.3.0]: https://github.com/cdelmonte-zg/nanoidp/compare/v1.2.3...v1.3.0
 [1.2.3]: https://github.com/cdelmonte-zg/nanoidp/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/cdelmonte-zg/nanoidp/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/cdelmonte-zg/nanoidp/compare/v1.2.0...v1.2.1
