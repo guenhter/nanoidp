@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2026-03-26
+
+### Fixed
+- Allow authorization code flow without `Authorization` header for PKCE public clients (RFC 6749 §2.1)
+  - Libraries like authlib send `client_id` in the request body instead of the header when no client secret exists
+  - Auth header validation is now only enforced for grant types other than `authorization_code`
+
+### Added
+- Test for PKCE plain flow without auth header (`test_pkce_plain_flow_no_auth_header`)
+
 ## [1.3.0] - 2026-03-25
 
 ### Added
@@ -140,6 +150,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Key rotation with JWKS support for multiple keys
 - External key import support
 
+[1.3.1]: https://github.com/cdelmonte-zg/nanoidp/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/cdelmonte-zg/nanoidp/compare/v1.2.3...v1.3.0
 [1.2.3]: https://github.com/cdelmonte-zg/nanoidp/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/cdelmonte-zg/nanoidp/compare/v1.2.1...v1.2.2
