@@ -361,6 +361,7 @@ class NanoIDPTestAgent:
             auth_params = {
                 "response_type": "code",
                 "client_id": self.client_id,
+                "nonce": secrets.token_urlsafe(16),
                 "redirect_uri": redirect_uri,
                 "scope": "openid profile",
                 "state": state,
@@ -421,12 +422,22 @@ class NanoIDPTestAgent:
 
                         if token_response.status_code == 200:
                             data = token_response.json()
+
+                            nonce_ok = False
+                            if jwt and "id_token" in data:
+                                decoded = jwt.decode(data["id_token"], options={"verify_signature": False})
+                                nonce_ok = decoded.get("nonce") == auth_params["nonce"]
+
                             return self._add_result(
                                 "Auth Code + PKCE",
                                 TestCategory.OAUTH,
-                                True,
+                                "id_token" in data and "access_token" in data and nonce_ok,
                                 "Flow completo: authorize -> code -> token",
-                                {"has_access_token": "access_token" in data}
+                                {
+                                    "has_access_token": "access_token" in data,
+                                    "has_id_token": "id_token" in data,
+                                    "nonce_ok": nonce_ok,
+                                }
                             )
 
                         error = token_response.json().get("error", "unknown")

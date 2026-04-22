@@ -58,6 +58,8 @@ class TokenService:
         user: User,
         exp_minutes: Optional[int] = None,
         extra_claims: Optional[Dict[str, Any]] = None,
+        nonce: Optional[str] = None,
+        scope: Optional[str] = None,
     ) -> Dict[str, Any]:
         """Create a JWT token for a user."""
         settings = self.config.settings
@@ -99,6 +101,15 @@ class TokenService:
             extra=extra,
             exp_minutes=exp_minutes,
         )
+        
+        id_token = self.crypto.create_jwt(
+            sub=user.username,
+            issuer=settings.issuer,
+            audience=settings.audience,
+            exp_minutes=exp_minutes,
+            nonce = nonce
+        ) if scope and "openid" in scope.split() else None
+
 
         # Create refresh token (valid for 7 days)
         refresh_extra = {"token_type": "refresh"}
@@ -112,13 +123,18 @@ class TokenService:
             exp_minutes=7 * 24 * 60,  # 7 days
         )
 
-        return {
+        response = {
             "access_token": token,
             "token_type": "Bearer",
             "expires_in": exp_minutes * 60,
             "refresh_token": refresh_token,
             "scope": "openid",
         }
+
+        if id_token is not None:
+            response["id_token"] = id_token
+
+        return response
 
 
 # Global token service instance

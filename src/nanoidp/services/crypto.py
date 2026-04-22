@@ -298,6 +298,7 @@ class CryptoService:
         tenant: str = None,
         extra: dict = None,
         exp_minutes: int = 60,
+        nonce: Optional[str] = None
     ) -> str:
         """Create a signed JWT token."""
         now = datetime.now(timezone.utc)
@@ -317,7 +318,9 @@ class CryptoService:
             payload["tenant"] = tenant
         if extra and isinstance(extra, dict):
             payload.update(extra)
-
+        if nonce is not None:
+            payload["nonce"] = nonce
+            
         headers = {"kid": self.kid, "alg": "RS256", "typ": "JWT"}
         token = jwt.encode(payload, self.priv_pem, algorithm="RS256", headers=headers)
         return token

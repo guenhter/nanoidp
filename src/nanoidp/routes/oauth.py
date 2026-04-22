@@ -267,6 +267,8 @@ def token():
     body_client_id = request.form.get("client_id")
     auth_client_id = auth.username if auth else None
     client_id = body_client_id or auth_client_id
+    nonce = None
+    scope = None
 
     # Reject if client identity cannot be determined at all
     if not client_id:
@@ -488,6 +490,12 @@ def token():
             )
             return abort(401, description="User not found")
 
+        if auth_code.nonce is not None: 
+            nonce = auth_code.nonce
+        
+        if auth_code.scope is not None:
+            scope = auth_code.scope
+
     # Client credentials grant
     elif grant_type == "client_credentials":
         # Use default user for client credentials
@@ -624,6 +632,8 @@ def token():
         user=user,
         exp_minutes=exp_minutes,
         extra_claims=extra_claims,
+        nonce=nonce,
+        scope=scope,
     )
 
     # Audit log
