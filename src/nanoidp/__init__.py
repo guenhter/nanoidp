@@ -10,6 +10,7 @@ Features:
 - Configurable users with custom attributes
 - Web UI for monitoring and testing
 """
+from importlib.metadata import version
 
-__version__ = "1.3.2"
+__version__ = version("nanoidp")
 __author__ = "NanoIDP Contributors"

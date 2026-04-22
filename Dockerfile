@@ -6,7 +6,6 @@ FROM python:3.12-slim
 
 LABEL maintainer="Christian Del Monte"
 LABEL description="Lightweight Identity Provider for testing"
-LABEL version="1.0.0"
 
 # Set working directory
 WORKDIR /app

@@ -12,6 +12,8 @@ import argparse
 import sys
 import os
 
+from nanoidp import __version__
+
 # Add src to path for development
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -201,9 +203,9 @@ def main():
     # Run server
     from nanoidp.app import run_app
 
-    print("""
+    print(f"""
     ╔══════════════════════════════════════════╗
-    ║              NanoIDP v1.2.1              ║
+    ║{f"NanoIDP v{__version__}":^42}║
     ║   Lightweight Identity Provider          ║
     ╚══════════════════════════════════════════╝
     """)
